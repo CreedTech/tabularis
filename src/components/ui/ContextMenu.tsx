@@ -142,9 +142,15 @@ const SubmenuRow = ({
       onMouseLeave={scheduleClose}
     >
       <button
+        type="button"
         disabled={item.disabled}
+        aria-expanded={open}
+        onFocus={() => {
+          cancelClose();
+          setOpen(true);
+        }}
         className={`
-          w-full text-left pl-3 pr-2 py-2 text-sm flex items-center gap-2
+          w-full text-left pl-3 pr-2 py-2 text-sm flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus
           ${item.disabled
             ? 'text-muted/50 cursor-not-allowed'
             : `text-primary ${open ? 'bg-surface-tertiary' : 'hover:bg-surface-tertiary'}`

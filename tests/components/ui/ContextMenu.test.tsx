@@ -268,6 +268,25 @@ describe('ContextMenu', () => {
     expect(mockOnClose).toHaveBeenCalled();
   });
 
+  it('opens a submenu when its button receives keyboard focus', () => {
+    render(
+      <ContextMenu
+        x={100}
+        y={100}
+        items={[{ label: 'Copy name', submenu: [{ label: 'Quoted name', action: mockAction1 }] }]}
+        onClose={mockOnClose}
+      />
+    );
+
+    const parent = screen.getByRole('button', { name: 'Copy name' });
+    expect(parent).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.focus(parent);
+    expect(parent).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(screen.getByRole('button', { name: 'Quoted name' }));
+    expect(mockAction1).toHaveBeenCalledOnce();
+    expect(mockOnClose).toHaveBeenCalledOnce();
+  });
+
   it('handles many menu items', () => {
     const manyItems = Array.from({ length: 10 }, (_, i) => ({
       label: `Item ${i + 1}`,
